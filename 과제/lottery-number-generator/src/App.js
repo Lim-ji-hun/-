@@ -17,7 +17,7 @@ function App() {
   // Flask API에서 데이터를 받아오는 함수
   const fetchJupyterData = async () => {
     try {
-      const response = await fetch('http://localhost:5000/get-variable');
+      const response = await fetch('http://localhost:5001/get-variable');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

@@ -28,10 +28,10 @@ app.use(bodyParser.json());
 
 // POST 요청 처리
 app.post('/send-numbers', (req, res) => {
-    const { round, num1, num2, num3, num4, num5, num6, num7, num8 } = req.body;
+    const { round, num1, num2, num3, num4, num5, num6, num7} = req.body;
 
-    const sql = 'INSERT INTO lottery (round, num1, num2, num3, num4, num5, num6, num7) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-    db.query(sql, [round, num1, num2, num3, num4, num5, num6, num7, num8], (error, results) => {
+    const sql = 'INSERT INTO lotto (`time`, `1`, `2`, `3`, `4`, `5`, `6`, `7`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    db.query(sql, [round, num1, num2, num3, num4, num5, num6, num7], (error, results) => {
         if (error) {
             console.error('DB 오류:', error);
             return res.status(500).json({ error: 'DB에 데이터를 저장하는데 오류가 발생했습니다.' });
