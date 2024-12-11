@@ -1,4 +1,4 @@
-import pygame, math, time, os
+import pygame, math, time, os, random
 
 pygame.init()
 
@@ -31,6 +31,11 @@ t4 = []
 
 speed = 2
 
+notesumt = 0
+
+a = 0
+aa = 0
+
 def sum_note(n):
     ty = 0
     tst = Time
@@ -55,6 +60,13 @@ def sum_note(n):
 while main:
     while ingame:
 
+        if Time > 0.2 * notesumt:
+            notesumt += 1
+            while a == aa:
+                a = random.randint(1, 4)
+            sum_note(a)
+            aa = a
+
         Time = time.time() - gst
 
         fps = clock.get_fps()
@@ -68,16 +80,25 @@ while main:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
                     keyset[0] = 1
-                    sum_note(1)
+                    if len(t1) > 0:
+                        if t1[0][0] > h / 2:
+                            del t1[0]
                 if event.key == pygame.K_f:
                     keyset[1] = 1
-                    sum_note(2)
+                    if len(t2) > 0:
+                        if t2[0][0] > h / 2:
+                            del t2[0]
                 if event.key == pygame.K_j:
                     keyset[2] = 1
-                    sum_note(3)
+                    if len(t3) > 0:
+                        if t3[0][0] > h / 2:
+                            del t3[0]
                 if event.key == pygame.K_k:
                     keyset[3] = 1
-                    sum_note(4)
+                    if len(t4) > 0:
+                        if t4[0][0] > h / 2:
+                            del t4[0]
+                    
             
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
