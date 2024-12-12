@@ -79,41 +79,46 @@ rate_date = [0, 0, 0, 0]
 
 def rating(n):
     global combo, miss_anim, last_combo, combo_effect, combo_effect2, combo_time, rate
-    if abs((h/12) * 9 - rate_date[n-1] < 950 * speed * (h/900) and (h/12) * 9 - rate_date[n - 1] >= 200 * speed * (h/900)):
-        last_combo = combo
-        miss_anim = 1
-        combo = 0
-        combo_effect = 0.2
-        combo_time = Time + 1
-        combo_effect2 = 1.3
-        rate = "WORST"
-    if abs((h/12) * 9 - rate_date[n-1]) < 200 * speed * (h/900) and abs((h/12) * 9 - rate_date[n - 1]) >= 100 * speed * (h/900):
-        last_combo = combo
-        miss_anim = 1
-        combo = 0
-        combo_effect = 0.2
-        combo_time = Time + 1
-        combo_effect2 = 1.3
-        rate = "BAD"
-    if abs((h/12) * 9 - rate_date[n-1]) < 100 * speed * (h/900) and abs((h/12) * 9 - rate_date[n - 1]) >= 50 * speed * (h/900):
-        combo += 1
-        combo_effect = 0.2
-        combo_time = Time + 1
-        combo_effect2 = 1.3
-        rate = "GOOD"
-    if abs((h/12) * 9 - rate_date[n-1]) < 50 * speed * (h/900) and abs((h/12) * 9 - rate_date[n - 1]) >= 15 * speed * (h/900):
-        combo += 1
-        combo_effect = 0.2
-        combo_time = Time + 1
-        combo_effect2 = 1.3
-        rate = "GREAT"
-    if abs((h/12) * 9 - rate_date[n-1]) < 15 * speed * (h/900) and abs((h/12) * 9 - rate_date[n - 1]) >= 0 * speed * (h/900):
-        combo += 1
-        combo_effect = 0.2
-        combo_time = Time + 1
-        combo_effect2 = 1.3
-        rate = "PERFECT"
+    if len(t1) > 0 and n == 1:
+        tile_position = t1[0][0]
+    elif len(t2) > 0 and n == 2:
+        tile_position = t2[0][0]
+    elif len(t3) > 0 and n == 3:
+        tile_position = t3[0][0]
+    elif len(t4) > 0 and n == 4:
+        tile_position = t4[0][0]
+    else:
+        return  
 
+    target_position = (h / 12) * 9
+    diff = abs(target_position - tile_position)
+
+    if diff < 15 * speed * (h / 900):
+        rate = "PERFECT"
+        combo += 1
+    elif diff < 50 * speed * (h / 900):
+        rate = "GREAT"
+        combo += 1
+    elif diff < 100 * speed * (h / 900):
+        rate = "GOOD"
+        combo += 1
+    elif diff < 200 * speed * (h / 900):
+        rate = "BAD"
+        combo = 0
+        miss_anim = 1
+    elif diff < 950 * speed * (h / 900):
+        rate = "WORST"
+        combo = 0
+        miss_anim = 1
+    else:
+        rate = "MISS"
+        combo = 0
+        miss_anim = 1
+
+    last_combo = combo
+    combo_effect = 0.2
+    combo_effect2 = 1.3
+    combo_time = Time + 1
 
 while main:
     while ingame:
@@ -155,26 +160,18 @@ while main:
             if event.type == pygame.QUIT:
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_d:
-                    keyset[0] = 1
-                    if len(t1) > 0:
-                        if t1[0][0] > h / 3:
-                            del t1[0]
-                if event.key == pygame.K_f:
-                    keyset[1] = 1
-                    if len(t2) > 0:
-                        if t2[0][0] > h / 3:
-                            del t2[0]
-                if event.key == pygame.K_j:
-                    keyset[2] = 1
-                    if len(t3) > 0:
-                        if t3[0][0] > h / 3:
-                            del t3[0]
-                if event.key == pygame.K_k:
-                    keyset[3] = 1
-                    if len(t4) > 0:
-                        if t4[0][0] > h / 3:
-                            del t4[0]
+                if event.key == pygame.K_d and len(t1) > 0:
+                    rating(1)
+                    del t1[0]
+                elif event.key == pygame.K_f and len(t2) > 0:
+                    rating(2)
+                    del t2[0]
+                elif event.key == pygame.K_j and len(t3) > 0:
+                    rating(3)
+                    del t3[0]
+                elif event.key == pygame.K_k and len(t4) > 0:
+                    rating(4)
+                    del t4[0]
                     
             
             if event.type == pygame.KEYUP:
@@ -220,72 +217,6 @@ while main:
             i += 1
             pygame.draw.rect(screen, (200 - ((200 / 7) * i), 200 - ((200 / 7) * i), 200 - ((200/ 7) * i)), (w / 2 + w / 16 + w / 32 - (w / 32) * keys[3], (h / 12) * 9 - (h / 30) * keys[3] * i, w / 16 * keys[3], (h / 35) / i)) 
        
-        """
-
-        for i in range(1, 8):  # i는 1부터 7까지
-            pygame.draw.rect(
-                screen,
-                (
-                    int(200 - ((200 / 7) * i)),
-                    int(200 - ((200 / 7) * i)),
-                    int(200 - ((200 / 7) * i))
-                ),
-                (
-                    w / 2 - w / 8 + w / 32 - (w / 32) * keys[0],
-                    (h / 12) * 9 - (h / 30) * keys[0] * i,
-                    w / 16 * keys[0],
-                    (h / 35) / i
-                )
-            )
-
-        for i in range(1, 8):
-            pygame.draw.rect(
-                screen,
-                (
-                    int(200 - ((200 / 7) * i)),
-                    int(200 - ((200 / 7) * i)),
-                    int(200 - ((200 / 7) * i))
-                ),
-                (
-                    w / 2 - w / 16 + w / 32 - (w / 32) * keys[1],
-                    (h / 12) * 9 - (h / 30) * keys[1] * i,
-                    w / 16 * keys[1],
-                    (h / 35) / i
-                )
-            )
-
-        for i in range(1, 8):
-            pygame.draw.rect(
-                screen,
-                (
-                    int(200 - ((200 / 7) * i)),
-                    int(200 - ((200 / 7) * i)),
-                    int(200 - ((200 / 7) * i))
-                ),
-                (
-                    w / 2 + w / 32 - (w / 32) * keys[2],
-                    (h / 12) * 9 - (h / 30) * keys[2] * i,
-                    w / 16 * keys[2],
-                    (h / 35) / i
-                )
-            )
-
-        for i in range(1, 8):
-            pygame.draw.rect(
-                screen,
-                (
-                    int(200 - ((200 / 7) * i)),
-                    int(200 - ((200 / 7) * i)),
-                    int(200 - ((200 / 7) * i))
-                ),
-                (
-                    w / 2 + w / 16 + w / 32 - (w / 32) * keys[3],
-                    (h / 12) * 9 - (h / 30) * keys[3] * i,
-                    w / 16 * keys[3],
-                    (h / 35) / i
-                )
-            )
-"""
 
         pygame.draw.rect(screen, (255, 255, 255), (w / 2 - w / 8, -int(w / 100), w / 4, h + int(w / 50)), int(w / 100))
 
@@ -345,17 +276,13 @@ while main:
 
         pygame.draw.rect(screen, (0, 0, 0), (w /2 - w / 8, (h /12 ) * 9, w / 4, h / 2))
         pygame.draw.rect(screen, (255, 255, 255), (w /2 - w / 8, (h /12 ) * 9, w / 4, h / 2), int(h/100))
-        #===================================
+
+
         pygame.draw.rect(screen, (0, 0, 0), (w /2 - w / 8, (h /12 ) * 9, w / 4, h / 2))
         pygame.draw.rect(screen, (255, 255, 255), (w /2 - w / 8, (h /12 ) * 9, w / 4, h / 2), int(h/100))
 
-        pygame.draw.rect(screen, (255 - 100 * keys[0],255 - 100 * keys[0], 255 - 100 * keys[0]), (w / 2 - w / 9, (h / 24) * 19 + (h / 48) * keys[0], w / 27, h / 8), int(h / 150))
-        pygame.draw.rect(screen, (255 - 100 * keys[3],255 - 100 * keys[3], 255 - 100 * keys[3]), (w / 2 + w / 13.5, (h / 24) * 19 + (h / 48) * keys[3], w / 27, h / 8), int(h / 150))
-
-        pygame.draw.circle(screen, (150, 150, 150), (w / 2, (h / 24) * 21), (w / 20), int(h / 200))
-        pygame.draw.line(screen, (150, 150, 150), (w / 2 - math.sin(spin) * 25 * (w / 1600), (h / 24) * 21 - math.cos(spin) * 25 * (w / 1600)), (w / 2 + math.sin(spin) * 25 * (w / 1600), (h / 24) * 21 + math.cos(spin) * 25 * (w / 1600)), int(w / 400))
-        spin += (speed / 20 * (maxframe / fps))
-
+        pygame.draw.rect(screen, (255 - 100 * keys[0], 255 - 100 * keys[0], 255 - 100 * keys[0]), (w / 2 - w / 9, (h / 24) * 19 + (h / 48) * keys[0], w / 27, h / 8), int(h / 150))
+        pygame.draw.rect(screen, (255 - 100 * keys[3], 255 - 100 * keys[3], 255 - 100 * keys[3]), (w / 2 + w / 13.5, (h / 24) * 19 + (h / 48) * keys[3], w / 27, h / 8), int(h / 150))
 
         pygame.draw.rect(screen, (255 - 100 * keys[1], 255 - 100 * keys[1], 255 - 100 * keys[1]), (w / 2 - w / 18, (h / 48) * 39 + (h / 48) * keys[1], w / 27, h / 8))
         pygame.draw.rect(screen, (50,50, 50), (w / 2 - w / 18, (h / 48) * 39 + (h / 48) * keys[1], w / 27, h / 8), int(h / 150))
