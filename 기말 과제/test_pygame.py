@@ -77,6 +77,9 @@ combo_time = Time + 1
 
 rate_date = [0, 0, 0, 0]
 
+miss_count = 0
+combo_count = 0
+
 def rating(n):
     global combo, miss_anim, last_combo, combo_effect, combo_effect2, combo_time, rate
     if len(t1) > 0 and n == 1:
@@ -132,7 +135,7 @@ while main:
         if len(t4) > 0:
             rate_date[3] = t4[0][0]
 
-        if Time > 0.2 * notesumt:
+        if Time > 0.2 * notesumt and miss_count < 5 and combo_count <= 1:
             notesumt += 1
             while a == aa:
                 a = random.randint(1, 4)
@@ -232,6 +235,7 @@ while main:
                 combo_time = Time + 1
                 combo_effect2 = 1.3
                 rate = "MISS"
+                miss_count += 1
                 t1.remove(title_data)
 
         for title_data in t2:
@@ -245,6 +249,7 @@ while main:
                 combo_time = Time + 1
                 combo_effect2 = 1.3
                 rate = "MISS"
+                miss_count += 1
                 t2.remove(title_data)
 
         for title_data in t3:
@@ -258,6 +263,7 @@ while main:
                 combo_time = Time + 1
                 combo_effect2 = 1.3
                 rate = "MISS"
+                miss_count += 1
                 t3.remove(title_data)
 
         for title_data in t4:
@@ -271,7 +277,29 @@ while main:
                 combo_time = Time + 1
                 combo_effect2 = 1.3
                 rate = "MISS"
+                miss_count += 1
                 t4.remove(title_data)
+
+        miss_count = miss_count
+
+        if combo >= 100:
+            combo_count += 1
+            lose_text = ingame_font_combo.render("YOU WIN", True, (0, 255, 0))
+            screen.blit(lose_text, (w / 2 - lose_text.get_width() / 2, h / 2 - lose_text.get_height() / 2))
+
+            t1.clear()
+            t2.clear()
+            t3.clear()
+            t4.clear()
+        
+        if miss_count >= 5:
+            lose_text = ingame_font_combo.render("YOU LOSE", True, (255, 0, 0))
+            screen.blit(lose_text, (w / 2 - lose_text.get_width() / 2, h / 2 - lose_text.get_height() / 2))
+            t1.clear()
+            t2.clear()
+            t3.clear()
+            t4.clear()
+
 
 
         pygame.draw.rect(screen, (0, 0, 0), (w /2 - w / 8, (h /12 ) * 9, w / 4, h / 2))
