@@ -47,5 +47,5 @@ def start_screen():
 
 start_screen()
 
-os.system('python "C:/Users/home/Desktop/기말 과제/test_pygame.py"')
+os.system('python "C:/Users/home/Desktop/기말 과제/pygame.py"')
 
