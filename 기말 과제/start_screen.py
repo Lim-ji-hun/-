@@ -5,7 +5,7 @@ import sys
 
 pygame.init()
 
-w = 1600
+w = 800
 h = w * (9/16)
 screen = pygame.display.set_mode((w, h))
 pygame.display.set_caption("Start Screen")

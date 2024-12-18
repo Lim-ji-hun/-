@@ -2,7 +2,7 @@ import pygame, math, time, os, random
 
 pygame.init()
 
-w = 1600
+w = 800
 h = w * (9/16)
 
 screen = pygame.display.set_mode((w, h))
